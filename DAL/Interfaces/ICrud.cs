@@ -7,5 +7,6 @@ namespace CatalogAPI.DAL.Interfaces
         void Insert(T obj);
         void Update(T obj);
         void Delete(int id);
+        
     }
 }

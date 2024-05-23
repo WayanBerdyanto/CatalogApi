@@ -176,7 +176,8 @@ app.MapGet("/api/product", (IProduct product) =>
             Quantity = data.Quantity,
         });
     }
-    return Results.Ok(new { success = true, message = "request data successful", data = productDto });
+    return Results.Ok(productDto);
+    // return Results.Ok(new { success = true, message = "request data successful", data = productDto });
 }).WithOpenApi();
 
 // Get Product By Id
@@ -194,7 +195,8 @@ app.MapGet("/api/productById/{id}", (IProduct products, int id) =>
     productDto.Description = product.Description;
     productDto.Price = product.Price;
     productDto.Quantity = product.Quantity;
-    return Results.Ok(new { success = true, message = "request data successful", data = productDto });
+    return Results.Ok(productDto);
+    // return Results.Ok(new { success = true, message = "request data successful", data = productDto });
 }).WithOpenApi();
 
 // Get Product By name
@@ -265,6 +267,24 @@ app.MapPut("/api/product", (IProduct productDal, ProductDto productDto) =>
     catch (Exception ex)
     {
         return Results.BadRequest(ex.Message);
+    }
+});
+
+// Put Stok Prouct
+app.MapPut("/api/products/updatestock", async (IProduct productDal, ProductDto productUpdateStockDto) =>
+{
+    try
+    {
+        await productDal.UpdateStockAsync(productUpdateStockDto.ProductID, productUpdateStockDto.Quantity);
+        return Results.Ok(new { Message = "Product stock updated successfully" });
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { Message = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Message = "An error occurred while updating the product stock", Error = ex.Message });
     }
 });
 
