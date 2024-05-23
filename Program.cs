@@ -1,8 +1,10 @@
 using CatalogAPI.DAL;
 using CatalogAPI.DAL.Interfaces;
 using CatalogAPI.DTO;
+using CatalogAPI.DTO.Category;
 using CatalogAPI.DTO.Product;
 using CatalogAPI.Models;
+using CatalogServices;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Configure CategoryDapper
+builder.Services.AddScoped<ICategory, CategoryDapper>();
 
 // Configure ProductDapper
 builder.Services.AddScoped<IProduct, ProductDapper>();
@@ -41,6 +46,114 @@ builder.Services.AddSwaggerGen(options =>
     );
 });
 var app = builder.Build();
+
+// Get Category
+app.MapGet("/api/category", (ICategory categoryDal) =>
+{
+    List<CategoryDTO> categoriesDto = new List<CategoryDTO>();
+    var categories = categoryDal.GetAll();
+    if (!categories.Any())
+    {
+        return Results.NotFound(new { error = true, message = "Data Kosong" });
+    }
+    foreach (var category in categories)
+    {
+        categoriesDto.Add(new CategoryDTO
+        {
+            CategoryID = category.CategoryID,
+            CategoryName = category.CategoryName
+        });
+    }
+    return Results.Ok(new { success = true, message = "request data successful", data = categoriesDto });
+}).WithOpenApi();
+
+// Get Category By Id
+app.MapGet("/api/categoryById/{id}", (ICategory categoryDal, int id) =>
+{
+    CategoryDTO categoryDto = new CategoryDTO();
+    var category = categoryDal.GetByID(id);
+    if (category == null)
+    {
+        return Results.NotFound(new { error = true, message = "Id Tidak Ditemukan" });
+    }
+    categoryDto.CategoryID = category.CategoryID;
+    categoryDto.CategoryName = category.CategoryName;
+    return Results.Ok(new { success = true, message = "request data successful", data = categoryDto });
+}).WithOpenApi();
+
+// Get Category By Name
+app.MapGet("/api/category/search/{name}", (ICategory categoryDal, string name) =>
+{
+    List<CategoryDTO> categoriesDto = new List<CategoryDTO>();
+    var categories = categoryDal.GetByName(name);
+
+    if (!categories.Any())
+    {
+        return Results.NotFound(new { error = true, message = "Nama Tidak Ditemukan" });
+    }
+    foreach (var category in categories)
+    {
+        categoriesDto.Add(new CategoryDTO
+        {
+            CategoryID = category.CategoryID,
+            CategoryName = category.CategoryName
+        });
+    }
+    return Results.Ok(new { success = true, message = "request successful", data = categoriesDto });
+}).WithOpenApi();
+
+// Post Category
+app.MapPost("/api/category", (ICategory categoryDal, CategoryCreateDto categoryCreateDto) =>
+{
+    try
+    {
+        Category category = new Category
+        {
+            CategoryName = categoryCreateDto.CategoryName
+        };
+        categoryDal.Insert(category);
+
+        //return 201 Created
+        return Results.Created($"/api/category/{category.CategoryID}", category);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithOpenApi();
+
+// Put Category
+app.MapPut("/api/category", (ICategory categoryDal, CategoryUpdateDto categoryUpdateDto) =>
+{
+    try
+    {
+        var category = new Category
+        {
+            CategoryID = categoryUpdateDto.CategoryID,
+            CategoryName = categoryUpdateDto.CategoryName
+        };
+        categoryDal.Update(category);
+        return Results.Ok(new { success = true, message = "request update successful", data = category });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+}).WithOpenApi();
+
+// Delete Category
+app.MapDelete("/api/category/{id}", (ICategory categoryDal, int id) =>
+{
+    try
+    {
+        categoryDal.Delete(id);
+        return Results.Ok(new { success = true, message = "request delete successful" });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(ex.Message);
+    }
+});
 
 // Get Product
 app.MapGet("/api/product", (IProduct product) =>

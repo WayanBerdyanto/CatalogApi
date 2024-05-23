@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\Presentasi Project\\CatalogApi\\CatalogApi.csproj": {}
+    "E:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\CatalogApi\\CatalogApi.csproj": {}
   },
   "projects": {
-    "D:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\Presentasi Project\\CatalogApi\\CatalogApi.csproj": {
+    "E:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\CatalogApi\\CatalogApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\Presentasi Project\\CatalogApi\\CatalogApi.csproj",
+        "projectUniqueName": "E:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\CatalogApi\\CatalogApi.csproj",
         "projectName": "CatalogApi",
-        "projectPath": "D:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\Presentasi Project\\CatalogApi\\CatalogApi.csproj",
-        "packagesPath": "C:\\Users\\USER\\.nuget\\packages\\",
-        "outputPath": "D:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\Presentasi Project\\CatalogApi\\obj\\",
+        "projectPath": "E:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\CatalogApi\\CatalogApi.csproj",
+        "packagesPath": "C:\\Users\\wayan\\.nuget\\packages\\",
+        "outputPath": "E:\\..SEMESTER 6\\DESAIN ARSITEKTUR MICROSERVICES\\CatalogApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\USER\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\wayan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
