@@ -202,5 +202,32 @@ namespace CatalogAPI.DAL
                 }
             }
         }
+        public async Task UpdateStokCancleAsync(int id, int quantity){
+            using (SqlConnection conn = _conn.GetConnectDb())
+            {
+                var strSql = @"UPDATE Products SET Quantity = Quantity + @Quantity WHERE ProductID = @ProductID";
+                var param = new
+                {
+                    ProductID = id,
+                    Quantity = quantity
+                };
+                try
+                {
+                    int rowsAffected = await conn.ExecuteAsync(strSql, param);
+                    if (rowsAffected == 0)
+                    {
+                        throw new InvalidOperationException("Tidak ada baris yang diupdate.");
+                    }
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new ArgumentException($"Error: {sqlEx.Message} - {sqlEx.Number}");
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException($"Error: {ex.Message}");
+                }
+            }
+        }
     }
 }

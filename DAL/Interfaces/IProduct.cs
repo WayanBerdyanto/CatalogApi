@@ -7,5 +7,7 @@ namespace CatalogAPI.DAL.Interfaces
         IEnumerable<Product> GetByName(string name);
 
         Task UpdateStockAsync(int id, int quantity);
+
+        Task UpdateStokCancleAsync(int id, int quantity);
     }
 }

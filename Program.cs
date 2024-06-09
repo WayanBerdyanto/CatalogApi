@@ -288,6 +288,23 @@ app.MapPut("/api/products/updatestock", async (IProduct productDal, ProductDto p
     }
 });
 
+app.MapPut("/api/products/updatecanclestock", async (IProduct productDal, ProductDto productUpdateStockDto) =>
+{
+    try
+    {
+        await productDal.UpdateStokCancleAsync(productUpdateStockDto.ProductID, productUpdateStockDto.Quantity);
+        return Results.Ok(new { Message = "Product stock updated successfully" });
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.BadRequest(new { Message = ex.Message });
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Message = "An error occurred while updating the product stock", Error = ex.Message });
+    }
+});
+
 // Delete Product
 app.MapDelete("/api/product/{id}", (IProduct productDal, int id) =>
 {
